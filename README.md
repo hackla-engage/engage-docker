@@ -19,6 +19,21 @@ Because we include two submodules: [engage-backend](https://github.com/hackla-en
 
 You can do your development in this pulled repository, because in effect you are cloning those two repos. Make sure you create a new branch if you want to do development in either of those repos.
 
+To develop on those submodules, go to GitHub. Make forks of either engage-backend or engage-celery. Add a repository as a `myfork` or some title you'll remember.
+
+For example:
+
+1. Fork engage-backend like I did [here](https://github.com/eselkin/engage-backend)
+2. Go to your clone of this repo and enter the engage-backend subdirectory
+3. Get the cloning address for your fork. Mine, for example is: git@github.com:eselkin/engage-backend.git
+4. Add the remote: `git remote add myfork git@github.com:eselkin/engage-backend.git`
+5. Make a new branch `git branch somedevelopmentfeature`
+6. Checkout that local branch `git checkout somedevelopmentfeature`
+7. Make changes to that submodule
+8. Push the branch to your fork: `git push --set-upstream myfork somedevelopmentfeature`
+9. Make a pull request from your fork on GitHub.com
+
+
 ### **Running in dev**
 
 We provide a `docker-compose-dev.yml` and a `dev.env`. The docker-compose file uses this environment file for its configuration. Several attributes can be changed but it is recommended that you do not include changes to that file in a PR.
