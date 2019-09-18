@@ -24,10 +24,6 @@ services:
     entrypoint: ./scripts/runprod.sh
     ports:
       - "8000:8000"
-    depends_on:
-      - redis
-    links:
-      - redis
   celery_worker:
     image: hack4laengage/engage_celery:latest
     volumes:
