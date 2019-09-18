@@ -21,13 +21,9 @@ services:
       - ../engconfig/engconfig.env
     image: hack4laengage/engage_backend_service:latest
     working_dir: /engage_backend_service
-    entrypoint: ./scripts/runprod.sh
+    entrypoint: ["sh", "/engage_backend_service/scripts/runprod.sh"]
     ports:
       - "8000:8000"
-    depends_on:
-      - redis
-    links:
-      - redis
   celery_worker:
     image: hack4laengage/engage_celery:latest
     volumes:
