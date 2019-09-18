@@ -24,15 +24,14 @@ To develop on those submodules, go to GitHub. Make forks of either engage-backen
 For example:
 
 1. Fork engage-backend like I did [here](https://github.com/eselkin/engage-backend)
-2. Go to your clone of this repo and enter the engage-backend subdirectory
-3. Get the cloning address for your fork. Mine, for example is: git@github.com:eselkin/engage-backend.git
+2. Go to your local clone of this repo and enter the `engage-backend` subdirectory
+3. Get the cloning address for your fork. Mine, for example is: `git@github.com:eselkin/engage-backend.git`
 4. Add the remote: `git remote add myfork git@github.com:eselkin/engage-backend.git`
 5. Make a new branch `git branch somedevelopmentfeature`
 6. Checkout that local branch `git checkout somedevelopmentfeature`
 7. Make changes to that submodule
 8. Push the branch to your fork: `git push --set-upstream myfork somedevelopmentfeature`
 9. Make a pull request from your fork on GitHub.com
-
 
 ### **Running in dev**
 
@@ -46,12 +45,12 @@ To run:
 4. Make sure you don't have postgres running on port 5432 on your system (most people don't)
 5. Make sure you don't have redis running on port 6379 on your system (most people don't)
 6. Make sure you don't have rabbitmq running on your system (most people don't)
-7. `docker-compose -f docker-compose-dev.yml build`  # Wait!
+7. `docker-compose -f docker-compose-dev.yml build` # Wait!
 8. `docker-compose -f docker-compose-dev.yml up` # Run
 
 Using the configuration from dev.env the scraper will begin scraping agendas after 1 minute and will populate a local database (postgres) running in one of the containers. This is controlled by the environment variable `BEAT_SANTAMONICA_SCRAPE=*`...
 
-If you wish to increase the time between scrapes, change the &ast; to another cron minute interval (i.e. &ast;/5 for every five minutes).
+If you wish to increase the time between scrapes, change the \* to another cron minute interval (i.e. \*/5 for every five minutes).
 
 You can log into that postgres container with the username and password from the `dev.env` file. However, in production this would not be possible.
 
