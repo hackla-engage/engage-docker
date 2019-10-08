@@ -15,7 +15,7 @@ If you forgot that step, you can just issue `git submodule init` and then `git s
 
 _Why?_
 
-Because we include two submodules: [engage-backend](https://github.com/hackla-engage/engage-backend] and [engage-celery](git@github.com:hackla-engage/engage-celery.git)
+Because we include two submodules: [engage-backend](https://github.com/hackla-engage/engage-backend) and [engage-celery](git@github.com:hackla-engage/engage-celery.git)
 
 You can do your development in this pulled repository, because in effect you are cloning those two repos. Make sure you create a new branch if you want to do development in either of those repos.
 
