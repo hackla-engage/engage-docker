@@ -10,7 +10,7 @@ services:
     logging: 
       driver: "none"
   redis:
-    image: redis:5-alpine
+    image: redis:5-alpinecd
     hostname: redis
     ports: 
       - "6379:6379"
@@ -24,8 +24,10 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+      - es01
     links:
       - redis
+      - es01
   celery_worker:
     image: hack4laengage/engage_celery:latest
     volumes:
@@ -35,9 +37,11 @@ services:
     links: 
       - rabbitmq
       - redis
+      - es01
     depends_on: 
       - rabbitmq
       - redis
+      - es01
     env_file: ../engconfig/engage_celery.env
   celery_beat:
     image: hack4laengage/engage_celery:latest
@@ -47,8 +51,37 @@ services:
       - rabbitmq
       - redis
       - celery_worker
+      - es01
     depends_on: 
       - rabbitmq
       - redis
       - celery_worker
+      - es01
     env_file: ../engconfig/engage_celery.env
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+    expose:
+      - "9200"
+    container_name: es01
+    environment:
+      - discovery.type=single-node
+      - node.name=es01
+      - network.host=_site_
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1 
+    volumes: 
+      - ./elasticsearch/esdata:/usr/share/elasticsearch/data
+      - ./elasticsearch/eslog:/usr/share/elasticsearch/log
+      - ./elasticsearch/eslogs:/usr/share/elasticsearch/logs
+  docker-init:
+    build:
+      context: ./elasticsearch
+      dockerfile: ./Dockerfile
+    links: 
+      - es01
+    depends_on: 
+      - es01

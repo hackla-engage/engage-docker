@@ -1,0 +1,7 @@
+# vscode folder
+.vscode
+.DS_Store
+
+/elasticsearch/esdata
+/elasticsearch/eslog
+/elasticsearch/eslogs
