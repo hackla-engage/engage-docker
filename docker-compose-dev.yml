@@ -1,0 +1,74 @@
+version: "3"
+
+services: 
+  rabbitmq:
+    image: rabbitmq:3.8-rc-alpine
+    env_file: ./dev.env
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+    logging: 
+      driver: "none"
+  postgres:
+    image: postgres:11-alpine
+    env_file: ./dev.env
+    hostname: postgres
+    # If you want to keep data between runs (first time make sure it's empty)
+    # make sure PGDATA in the dev.env points to /var/lib/postgresql/data/pgdata
+    # Then uncomment:
+    # volumes:
+    #   - someemptydir:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+  redis:
+    env_file: ./dev.env
+    image: redis:5-alpine
+    hostname: redis
+    command: "sh -c 'printenv REDIS_PASSWORD 2>&1 > ./redis_pass; sed -i \"1s/^/requirepass /\" ./redis_pass; redis-server ./redis_pass'; "
+    ports: 
+      - "6379:6379"
+  backend:
+    env_file: ./dev.env
+    image: engage_backend_service
+    build: ./engage-backend
+    volumes:
+      - ./engage-backend:/engage_backend_service
+    working_dir: /engage_backend_service
+    entrypoint: ["sh", "/engage_backend_service/scripts/rundev.sh"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    links:
+      - postgres
+  celery_worker:
+    env_file: ./dev.env
+    image: engage_celery
+    build: ./engage-celery/engage_app
+    volumes:
+      - ./engage-celery/engage_app:/engage_app
+      - ./pdfs:/pdfs
+    working_dir: /engage_app
+    entrypoint: ./scripts/runworkers.sh
+    links: 
+      - rabbitmq
+      - redis
+    depends_on: 
+      - rabbitmq
+      - redis
+  celery_beat:
+    env_file: ./dev.env
+    image: engage_celery
+    build: ./engage-celery/engage_app
+    volumes:
+      - ./engage-celery/engage_app:/engage_app
+    working_dir: /engage_app
+    entrypoint: ./scripts/runbeats.sh
+    links: 
+      - rabbitmq
+      - redis
+      - celery_worker
+    depends_on: 
+      - rabbitmq
+      - redis
+      - celery_worker

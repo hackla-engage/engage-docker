@@ -10,8 +10,10 @@ services:
     logging: 
       driver: "none"
   redis:
-    image: redis:5-alpinecd
+    env_file: ../engconfig/engage_celery.env
+    image: redis:5-alpine
     hostname: redis
+    command: "sh -c 'printenv REDIS_PASSWORD 2>&1 > ./redis_pass; sed -i \"1s/^/requirepass /\" ./redis_pass; redis-server ./redis_pass'; "
     ports: 
       - "6379:6379"
   backend:
@@ -19,14 +21,12 @@ services:
       - ../engconfig/engconfig.env
     image: hack4laengage/engage_backend_service:latest
     working_dir: /engage_backend_service
-    entrypoint: ./scripts/runprod.sh
+    entrypoint: ["sh", "/engage_backend_service/scripts/runprod.sh"]
     ports:
       - "8000:8000"
     depends_on:
-      - redis
       - es01
     links:
-      - redis
       - es01
   celery_worker:
     image: hack4laengage/engage_celery:latest

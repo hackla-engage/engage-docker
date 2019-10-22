@@ -1,0 +1,6 @@
+[submodule "engage-backend"]
+	path = engage-backend
+	url = git@github.com:hackla-engage/engage-backend.git
+[submodule "engage-celery"]
+	path = engage-celery
+	url = git@github.com:hackla-engage/engage-celery.git
