@@ -52,10 +52,10 @@ services:
       - ./pdfs:/pdfs
     working_dir: /engage_app
     entrypoint: ./scripts/runworkers.sh
-    # links: 
-    #   - rabbitmq
-    #   - redis
-    #   - es01
+    links: 
+      - rabbitmq
+      - redis
+      - es01
     depends_on: 
       - rabbitmq
       - redis
@@ -68,11 +68,11 @@ services:
       - ./engage-celery/engage_app:/engage_app
     working_dir: /engage_app
     entrypoint: ./scripts/runbeats.sh
-    # links: 
-    #   - rabbitmq
-    #   - redis
-    #   - celery_worker
-    #   - es01
+    links: 
+      - rabbitmq
+      - redis
+      - celery_worker
+      - es01
     depends_on: 
       - rabbitmq
       - redis
