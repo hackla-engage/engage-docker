@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# elasticsearch log files
+/elasticsearch/esdata
+/elasticsearch/eslog
+/elasticsearch/eslogs
+
+# Mac Store Files
+.DS_Store

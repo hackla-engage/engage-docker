@@ -39,8 +39,10 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+      - es01
     links:
       - postgres
+      - es01
   celery_worker:
     env_file: ./dev.env
     image: engage_celery
@@ -53,9 +55,11 @@ services:
     links: 
       - rabbitmq
       - redis
+      - es01
     depends_on: 
       - rabbitmq
       - redis
+      - es01
   celery_beat:
     env_file: ./dev.env
     image: engage_celery
@@ -68,7 +72,40 @@ services:
       - rabbitmq
       - redis
       - celery_worker
+      - es01
     depends_on: 
       - rabbitmq
       - redis
       - celery_worker
+      - es01
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+    restart: always
+    ports:
+      - "9200:9200"
+    container_name: es01
+    environment:
+      - discovery.type=single-node
+      - node.name=es01
+      - network.host=_site_
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1 
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes: 
+      - ./elasticsearch/esdata:/usr/share/elasticsearch/data
+      - ./elasticsearch/eslog:/usr/share/elasticsearch/log
+      - ./elasticsearch/eslogs:/usr/share/elasticsearch/logs
+  docker-init:
+    build:
+      context: ./elasticsearch
+      dockerfile: ./Dockerfile
+    links: 
+      - es01
+    depends_on: 
+      - es01
