@@ -3,10 +3,9 @@
 pdfs/
 pgdata/
 
-# elasticsearch log files
-elasticsearch/eslog/*
-elasticsearch/eslogs/*
 elasticsearch/esdata/*
+elasticsearch/eslogs/*
+elasticsearch/eslog/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
