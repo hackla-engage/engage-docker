@@ -3,6 +3,11 @@
 pdfs/
 pgdata/
 
+# elasticsearch log files
+elasticsearch/eslog/*.*
+elasticsearch/eslogs/*.*
+elasticsearch/esdata/*.*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,11 +132,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# elasticsearch log files
-/elasticsearch/esdata
-/elasticsearch/eslog
-/elasticsearch/eslogs
 
 # Mac Store Files
 .DS_Store
